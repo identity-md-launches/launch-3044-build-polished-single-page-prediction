@@ -1,0 +1,721 @@
+@font-face {
+  font-family: "Fredoka";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url("../node_modules/@fontsource-variable/fredoka/files/fredoka-latin-wght-normal.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Primitives. Components use the role tokens below, never these. */
+  --neutral-950: oklch(0.175 0.012 65);
+  --neutral-900: oklch(0.225 0.014 65);
+  --neutral-800: oklch(0.285 0.016 65);
+  --neutral-600: oklch(0.47 0.018 65);
+  --neutral-300: oklch(0.8 0.018 75);
+  --neutral-50: oklch(0.97 0.008 80);
+  --orange-500: oklch(0.75 0.17 55);
+  --orange-400: oklch(0.8 0.14 60);
+  --orange-950: oklch(0.22 0.05 50);
+  --green-400: oklch(0.82 0.16 150);
+  --red-400: oklch(0.76 0.15 25);
+
+  /* Roles */
+  --color-bg-page: var(--neutral-950);
+  --color-bg-surface: var(--neutral-900);
+  --color-bg-control: var(--neutral-800);
+  --color-line: var(--neutral-600);
+  --color-text-primary: var(--neutral-50);
+  --color-text-secondary: var(--neutral-300);
+  --color-accent-solid: var(--orange-500);
+  --color-accent-hover: var(--orange-400);
+  --color-on-accent: var(--orange-950);
+  --color-accent-text: var(--orange-400);
+  --color-focus: var(--neutral-50);
+  --color-correct: var(--green-400);
+  --color-wrong: var(--red-400);
+  --color-status-running: var(--green-400);
+  --color-status-failed: var(--red-400);
+
+  /* Hamster art */
+  --art-fur: oklch(0.8 0.085 78);
+  --art-fur-dark: oklch(0.66 0.085 70);
+  --art-belly: oklch(0.94 0.025 85);
+  --art-ear: oklch(0.7 0.08 45);
+  --art-eye: oklch(0.22 0.01 60);
+  --art-nose: oklch(0.72 0.12 10);
+
+  /* Type: five sizes */
+  --text-caption: 0.8125rem;
+  --text-body: 1rem;
+  --text-title: 1.25rem;
+  --text-stat: 1.75rem;
+  --text-display: 2.5rem;
+
+  /* Space */
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --gutter: var(--space-4);
+
+  /* Shape */
+  --radius-control: 0.875rem;
+  --radius-surface: 1.5rem;
+
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --wheel-size: min(100%, 35vh);
+}
+
+@supports (height: 1svh) {
+  :root {
+    --wheel-size: min(100%, 35svh);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding-block: max(var(--space-3), env(safe-area-inset-top)) max(var(--space-6), env(safe-area-inset-bottom));
+  padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-family: "Fredoka", ui-rounded, system-ui, sans-serif;
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Programmatic focus target after a pick, not a control. */
+#play-title:focus {
+  outline: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.caption {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+/* Masthead */
+.masthead,
+.game {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+.masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 var(--space-3);
+  margin-block-end: var(--space-2);
+}
+
+.masthead-name {
+  display: contents;
+}
+
+
+h1 {
+  font-size: var(--text-stat);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.tagline {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+.text-link {
+  color: var(--color-accent-text);
+  font-size: var(--text-caption);
+  font-weight: 500;
+  text-decoration-line: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.2em;
+}
+
+.masthead .text-link {
+  display: inline-flex;
+  align-items: center;
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 2.75rem;
+}
+
+.rules .text-link {
+  font-size: var(--text-body);
+}
+
+/* Layout */
+.game {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "stats"
+    "stage"
+    "play"
+    "rules";
+  gap: var(--space-3);
+}
+
+.stats { grid-area: stats; }
+.stage { grid-area: stage; }
+.play { grid-area: play; }
+.rules { grid-area: rules; }
+
+/* Stats */
+.stats dl {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.stats dl > div {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.stats dt {
+  color: var(--color-text-secondary);
+  font-size: var(--text-caption);
+  line-height: 1.2;
+}
+
+.stats dd {
+  font-size: var(--text-stat);
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+#storage-note {
+  margin-block-start: var(--space-2);
+}
+
+/* Stage */
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-surface);
+  background: var(--color-bg-surface);
+}
+
+.wheel {
+  display: block;
+  width: var(--wheel-size);
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.wheel-stand path {
+  fill: none;
+  stroke: var(--color-line);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.wheel-track,
+.wheel-ring {
+  fill: none;
+  stroke-width: 10;
+}
+
+.wheel-track {
+  fill: var(--color-bg-page);
+  stroke: var(--color-bg-control);
+}
+
+.wheel-ring {
+  stroke: var(--color-accent-solid);
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* A round cap would leave a dot on an empty ring. */
+.wheel-ring[data-empty] {
+  visibility: hidden;
+}
+
+.wheel-rungs {
+  fill: none;
+  stroke: var(--color-line);
+  stroke-width: 7;
+  stroke-dasharray: 3 15;
+}
+
+.wheel-spokes {
+  fill: none;
+  stroke: var(--color-bg-control);
+  stroke-width: 3;
+}
+
+.wheel-hub {
+  fill: var(--color-line);
+}
+
+.wheel-spin {
+  transform-box: view-box;
+  transform-origin: 160px 150px;
+}
+
+.hamster { display: none; }
+.wheel[data-hamster="running"] .hamster-running,
+.wheel[data-hamster="resting"] .hamster-resting,
+.wheel[data-hamster="unknown"] .hamster-unknown { display: inline; }
+
+.fur { fill: var(--art-fur); }
+.fur-dark { fill: var(--art-fur-dark); }
+.belly { fill: var(--art-belly); }
+.ear { fill: var(--art-fur-dark); }
+.ear-inner { fill: var(--art-ear); }
+.eye { fill: var(--art-eye); }
+.eye-shine { fill: var(--art-belly); }
+.nose { fill: var(--art-nose); }
+.whisker,
+.eye-closed {
+  fill: none;
+  stroke: var(--art-eye);
+  stroke-linecap: round;
+}
+.whisker { stroke-width: 1; opacity: 0.6; }
+.eye-closed { stroke-width: 2.5; }
+
+.z {
+  fill: var(--color-text-secondary);
+  font-size: 22px;
+  font-weight: 600;
+}
+.z-b { font-size: 28px; }
+.z-c { font-size: 34px; }
+
+.leg {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wheel-ring {
+    transition: stroke-dashoffset 250ms linear;
+  }
+
+  .wheel[data-hamster="running"] .wheel-spin {
+    animation: spin var(--spin, 1.2s) linear infinite;
+  }
+
+  .wheel[data-hamster="running"] .hamster-bob {
+    animation: bob 260ms ease-in-out infinite alternate;
+  }
+
+  .wheel[data-hamster="running"] .leg {
+    animation: stride 260ms ease-in-out infinite alternate;
+  }
+
+  .wheel[data-hamster="running"] .leg-back-a,
+  .wheel[data-hamster="running"] .leg-front-a {
+    animation-direction: alternate-reverse;
+  }
+
+  .wheel[data-hamster="resting"] .hamster-resting > .fur:first-child {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: breathe 2.8s ease-in-out infinite alternate;
+  }
+
+  .wheel[data-hamster="resting"] .z {
+    animation: drift 3.6s ease-in-out infinite;
+  }
+
+  .wheel[data-hamster="resting"] .z-b { animation-delay: 600ms; }
+  .wheel[data-hamster="resting"] .z-c { animation-delay: 1200ms; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bob {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3px); }
+}
+
+@keyframes stride {
+  from { transform: rotate(-28deg); }
+  to { transform: rotate(28deg); }
+}
+
+@keyframes breathe {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(1.05); }
+}
+
+@keyframes drift {
+  0%, 100% { opacity: 0.35; transform: translateY(2px); }
+  50% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* Live status strip */
+.now {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 var(--space-3);
+  width: 100%;
+  min-height: 2.75rem;
+}
+
+.now-state {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.now-dot {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--color-text-secondary);
+}
+
+.now-state[data-tone="running"] .now-dot { background: var(--color-status-running); }
+.now-state[data-tone="failed"] .now-dot { background: var(--color-status-failed); }
+.now-state[data-tone="resting"] .now-dot {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--color-text-secondary);
+}
+
+#now-age {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-button {
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-accent-text);
+  font: inherit;
+  font-size: var(--text-caption);
+  font-weight: 500;
+  text-decoration-line: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+/* Play panel: the same height in every view, so a pick never moves the page. */
+.play {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 11.5rem;
+}
+
+.play h2 {
+  font-size: var(--text-title);
+  font-weight: 600;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.view {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.play[data-view="idle"] .view-idle,
+.play[data-view="locked"] .view-locked,
+.play[data-view="reading"] .view-reading,
+.play[data-view="result"] .view-result {
+  display: flex;
+}
+
+.picks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.pick,
+.next {
+  border: 2px solid transparent;
+  border-radius: var(--radius-control);
+  color: var(--color-text-primary);
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: scale 150ms var(--ease), background-color 150ms var(--ease);
+}
+
+.pick:active,
+.next:active {
+  scale: 0.96;
+}
+
+.pick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 4.5rem;
+  padding: var(--space-2);
+  line-height: 1.2;
+}
+
+.pick-name {
+  font-size: var(--text-title);
+  font-weight: 600;
+}
+
+.pick-detail {
+  font-size: var(--text-caption);
+}
+
+.pick-squeek,
+.next {
+  background: var(--color-accent-solid);
+  color: var(--color-on-accent);
+}
+
+.pick-sleep {
+  border-color: var(--color-accent-solid);
+  background: var(--color-bg-control);
+}
+
+.next {
+  min-height: 3.25rem;
+  padding-inline: var(--space-6);
+  font-weight: 600;
+}
+
+@media (hover: hover) {
+  .pick-squeek:hover,
+  .next:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .pick-sleep:hover {
+    background: var(--color-bg-surface);
+  }
+
+  .text-link:hover,
+  .text-button:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+.timer {
+  font-size: var(--text-display);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* Fredoka has no tabular figures, so each digit gets a fixed cell and the clock holds still. */
+.timer-digit {
+  display: inline-block;
+  width: 0.66em;
+  text-align: center;
+}
+
+.result-line {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-weight: 500;
+}
+
+.result-icon {
+  display: none;
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-block-start: 0.125rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.result-line[data-tone="correct"] { color: var(--color-correct); }
+.result-line[data-tone="correct"] .result-icon-correct { display: block; }
+.result-line[data-tone="wrong"] { color: var(--color-wrong); }
+.result-line[data-tone="wrong"] .result-icon-wrong { display: block; }
+.result-line[data-tone="void"] .result-icon-void { display: block; }
+
+#result-evidence {
+  overflow-wrap: anywhere;
+}
+
+/* Rules */
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-block-start: var(--space-4);
+  max-width: 65ch;
+  scroll-margin-block-start: var(--space-4);
+  text-wrap: pretty;
+}
+
+.rules h2 {
+  font-size: var(--text-title);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.rules h3 {
+  margin-block-start: var(--space-3);
+  font-size: var(--text-body);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.rules ol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-inline-start: 1.25rem;
+}
+
+.rules code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9375em;
+  overflow-wrap: anywhere;
+}
+
+.noscript {
+  margin-block-start: var(--space-4);
+}
+
+/* Two columns once the wheel and the panel can both breathe. */
+@media (min-width: 60rem) {
+  :root {
+    --gutter: var(--space-8);
+    --wheel-size: min(100%, 68vh);
+  }
+
+  @supports (height: 1svh) {
+    :root {
+      --wheel-size: min(100%, 68svh);
+    }
+  }
+
+  body {
+    padding-block-start: var(--space-8);
+  }
+
+  h1 {
+    font-size: var(--text-display);
+  }
+
+  .tagline {
+    font-size: var(--text-body);
+  }
+
+  .masthead {
+    margin-block-end: var(--space-6);
+  }
+
+  .game {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "stage stats"
+      "stage play"
+      "stage rules";
+    gap: var(--space-6) var(--space-8);
+  }
+
+  .stage {
+    align-self: start;
+    position: sticky;
+    inset-block-start: var(--space-4);
+    padding: var(--space-6);
+  }
+
+  .play {
+    min-height: 12rem;
+    gap: var(--space-3);
+  }
+
+  .view {
+    gap: var(--space-3);
+  }
+
+  .rules {
+    margin-block-start: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .wheel-ring { stroke: Highlight; }
+  .now-dot { background: CanvasText; }
+  .pick,
+  .next { border-color: ButtonText; }
+}

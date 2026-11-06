@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Squeek or Sleep: predict the hamster</title>
+    <meta name="description" content="Predict the hamster. Powered by the real wheel. Guess whether Squeektoshi will be running or sleeping when the 90-second timer ends." />
+    <meta name="theme-color" content="#16120e" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Squeek or Sleep" />
+    <meta property="og:title" content="Squeek or Sleep" />
+    <meta property="og:description" content="Predict the hamster. Powered by the real wheel." />
+    <meta property="og:image" content="./og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A hamster running in a wheel beside the words Squeek or Sleep." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <script type="module" crossorigin src="./assets/index-BQqDSqBN.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BIW7zz0P.css">
+  </head>
+  <body>
+    <header class="masthead">
+      <div class="masthead-name">
+        <h1>Squeek or Sleep</h1>
+        <p class="tagline">Predict the hamster. Powered by the real wheel.</p>
+      </div>
+      <a class="text-link" href="#rules">How it works</a>
+    </header>
+
+    <main class="game">
+      <section class="stats" aria-label="Your stats">
+        <dl>
+          <div><dt>Score</dt><dd id="stat-score">0</dd></div>
+          <div><dt>Streak</dt><dd id="stat-streak">0</dd></div>
+          <div><dt>Best streak</dt><dd id="stat-best">0</dd></div>
+          <div><dt>Rounds</dt><dd id="stat-rounds">0</dd></div>
+        </dl>
+        <p class="caption" id="storage-note" hidden>This browser is blocking storage, so these numbers reset when the page closes.</p>
+      </section>
+
+      <section class="stage" aria-label="Live wheel">
+        <svg id="wheel" class="wheel" data-hamster="unknown" viewBox="0 0 320 320" role="img" aria-label="Squeektoshi, status not known yet">
+          <g class="wheel-stand" aria-hidden="true">
+            <path d="M160 150 96 306M160 150l64 156M78 306h164" />
+          </g>
+          <circle class="wheel-track" cx="160" cy="150" r="128" />
+          <circle id="wheel-ring" class="wheel-ring" cx="160" cy="150" r="128" pathLength="1" transform="rotate(-90 160 150)" />
+          <g class="wheel-spin">
+            <circle class="wheel-rungs" cx="160" cy="150" r="115" />
+            <path class="wheel-spokes" d="M160 35v230M45 150h230M78.7 68.7l162.6 162.6M241.3 68.7 78.7 231.3" />
+          </g>
+          <circle class="wheel-hub" cx="160" cy="150" r="10" />
+
+          <g class="hamster hamster-running">
+            <ellipse class="fur" cx="110" cy="226" rx="8" ry="5" />
+            <g class="leg leg-back-a"><ellipse class="fur-dark" cx="128" cy="252" rx="8" ry="11" /></g>
+            <g class="leg leg-front-b"><ellipse class="fur-dark" cx="186" cy="250" rx="7" ry="10" /></g>
+            <g class="hamster-bob">
+              <ellipse class="fur" cx="154" cy="224" rx="46" ry="30" />
+              <ellipse class="belly" cx="160" cy="238" rx="31" ry="15" />
+              <circle class="fur" cx="196" cy="206" r="25" />
+              <circle class="ear" cx="182" cy="184" r="9" />
+              <circle class="ear-inner" cx="182" cy="184" r="5" />
+              <circle class="belly" cx="205" cy="216" r="11" />
+              <circle class="eye" cx="204" cy="201" r="4" />
+              <circle class="eye-shine" cx="205.5" cy="199.5" r="1.3" />
+              <circle class="nose" cx="220" cy="208" r="3" />
+              <path class="whisker" d="M214 214l14 3M213 218l12 7" />
+            </g>
+            <g class="leg leg-back-b"><ellipse class="fur" cx="138" cy="252" rx="9" ry="11" /></g>
+            <g class="leg leg-front-a"><ellipse class="fur" cx="176" cy="250" rx="7" ry="10" /></g>
+          </g>
+
+          <g class="hamster hamster-resting">
+            <ellipse class="fur" cx="158" cy="232" rx="56" ry="33" />
+            <ellipse class="belly" cx="176" cy="248" rx="30" ry="14" />
+            <circle class="fur" cx="196" cy="230" r="24" />
+            <circle class="ear" cx="184" cy="208" r="9" />
+            <circle class="ear-inner" cx="184" cy="208" r="5" />
+            <circle class="belly" cx="204" cy="240" r="10" />
+            <path class="eye-closed" d="M197 227q6 5 12 0" />
+            <circle class="nose" cx="219" cy="233" r="3" />
+            <g class="snooze" aria-hidden="true">
+              <text class="z z-a" x="214" y="196">z</text>
+              <text class="z z-b" x="226" y="176">z</text>
+              <text class="z z-c" x="238" y="152">z</text>
+            </g>
+          </g>
+
+          <g class="hamster hamster-unknown">
+            <ellipse class="fur" cx="160" cy="226" rx="35" ry="38" />
+            <ellipse class="belly" cx="160" cy="236" rx="22" ry="25" />
+            <circle class="ear" cx="138" cy="158" r="10" />
+            <circle class="ear-inner" cx="138" cy="158" r="6" />
+            <circle class="ear" cx="182" cy="158" r="10" />
+            <circle class="ear-inner" cx="182" cy="158" r="6" />
+            <circle class="fur" cx="160" cy="178" r="29" />
+            <circle class="belly" cx="146" cy="189" r="9" />
+            <circle class="belly" cx="174" cy="189" r="9" />
+            <circle class="eye" cx="149" cy="174" r="4" />
+            <circle class="eye" cx="171" cy="174" r="4" />
+            <circle class="eye-shine" cx="150.3" cy="172.7" r="1.3" />
+            <circle class="eye-shine" cx="172.3" cy="172.7" r="1.3" />
+            <circle class="nose" cx="160" cy="184" r="3" />
+            <ellipse class="fur-dark" cx="147" cy="222" rx="6" ry="9" />
+            <ellipse class="fur-dark" cx="173" cy="222" rx="6" ry="9" />
+          </g>
+        </svg>
+
+        <div class="now">
+          <p class="now-state" id="now-state" data-tone="unknown">
+            <span class="now-dot" aria-hidden="true"></span>
+            <span id="now-text">Reading the wheel…</span>
+          </p>
+          <p class="caption" id="now-age"></p>
+          <button class="text-button" id="retry" type="button" hidden>Retry now</button>
+        </div>
+      </section>
+
+      <section class="play" id="play" aria-labelledby="play-title" data-view="idle">
+        <h2 id="play-title" tabindex="-1">Where will Squeektoshi be in 90 seconds?</h2>
+
+        <div class="view view-idle">
+          <div class="picks">
+            <button class="pick pick-squeek" id="pick-squeek" type="button">
+              <span class="pick-name">Squeek</span>
+              <span class="pick-detail">Hamster running</span>
+            </button>
+            <button class="pick pick-sleep" id="pick-sleep" type="button">
+              <span class="pick-name">Sleep</span>
+              <span class="pick-detail">Hamster sleeping</span>
+            </button>
+          </div>
+          <p class="caption">Correct picks score 1 point plus your streak.</p>
+        </div>
+
+        <div class="view view-locked">
+          <p class="timer" id="timer" role="timer" aria-label="Time left in this round">1:30</p>
+          <p class="caption">Locked in. The wheel decides when the timer ends.</p>
+        </div>
+
+        <div class="view view-reading">
+          <p class="caption">Asking the Squeekchain API for the final status.</p>
+        </div>
+
+        <div class="view view-result">
+          <p class="result-line" id="result-line" data-tone="neutral">
+            <svg class="result-icon result-icon-correct" viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.5 3.5L13 4.5" /></svg>
+            <svg class="result-icon result-icon-wrong" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8" /></svg>
+            <svg class="result-icon result-icon-void" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10" /></svg>
+            <span id="result-text"></span>
+          </p>
+          <p class="caption" id="result-evidence"></p>
+          <button class="next" id="next" type="button">Play next round</button>
+        </div>
+      </section>
+
+      <section class="rules" id="rules" aria-labelledby="rules-title">
+        <h2 id="rules-title">How a round works</h2>
+        <ol>
+          <li>Pick Squeek if you think Squeektoshi will be running when the timer ends, or Sleep if you think the wheel will be still.</li>
+          <li>Your pick locks for 90 seconds while the orange ring around the wheel drains.</li>
+          <li>When the ring is empty, this page reads the real status and scores the round.</li>
+        </ol>
+        <h3>Scoring</h3>
+        <p>A correct pick scores 1 point plus the streak you had going in, so a pick made on a streak of 2 scores 3. A wrong pick scores nothing and resets your streak.</p>
+        <h3>Where the answer comes from</h3>
+        <p><code>measurement.coreStatus</code> decides. When that word is unclear, <code>rpmMilli</code> decides: 1 rpm or more counts as running. If neither answers when the timer ends, the round is not scored and your numbers stay as they are.</p>
+        <p><a class="text-link" href="https://api.squeekchain.com/v1/status" rel="noopener">Open the live Squeekchain status</a></p>
+        <h3>Your numbers</h3>
+        <p>Score, streaks and rounds are saved in this browser only. There is no account and no shared leaderboard.</p>
+      </section>
+    </main>
+
+    <p class="sr-only" id="announce" role="status"></p>
+    <noscript><p class="noscript">This game needs JavaScript to read the wheel.</p></noscript>
+  </body>
+</html>
